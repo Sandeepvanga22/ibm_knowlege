@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkAuth();
-  }, [token]);
+  }, [checkAuth]);
 
   const value = {
     user,

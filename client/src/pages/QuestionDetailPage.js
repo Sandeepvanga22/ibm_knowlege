@@ -10,7 +10,7 @@ const QuestionDetailPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user: currentUser, isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
 
   const { data: question, isLoading: questionLoading } = useQuery(

@@ -11,11 +11,6 @@ const AgentPerformancePage = () => {
     () => axios.get('/agents/performance').then(res => res.data)
   );
 
-  const { data: agentSuggestions, isLoading: suggestionsLoading } = useQuery(
-    'agent-suggestions',
-    () => axios.get('/agents/suggestions').then(res => res.data)
-  );
-
   const agents = [
     {
       id: 'smartRouting',
@@ -267,7 +262,7 @@ const AgentPerformancePage = () => {
     }
   };
 
-  if (performanceLoading || suggestionsLoading) {
+  if (performanceLoading) {
     return <div className="loading">Loading agent performance...</div>;
   }
 
