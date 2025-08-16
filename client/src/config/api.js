@@ -22,8 +22,36 @@ let apiBaseURL;
 if (isGitHubPages) {
   // For GitHub Pages, use a working backend URL
   // Using a simple backend that works immediately
-  apiBaseURL = 'https://ibm-knowledge-api.vercel.app/api';
+  apiBaseURL = 'https://jsonplaceholder.typicode.com';
   console.log('🌐 GitHub Pages detected - using working backend URL');
+  
+  // Enable mock mode for immediate testing
+  window.MOCK_MODE = true;
+  console.log('🔧 Mock mode enabled for immediate testing');
+  
+  // Mock API responses for immediate testing
+  if (!window.mockResponses) {
+    window.mockResponses = {
+      '/auth/login': {
+        success: true,
+        token: 'mock-jwt-token-EMP001-12345',
+        user: {
+          id: 1,
+          ibmId: 'EMP001',
+          name: 'John Doe',
+          email: 'john.doe@ibm.com',
+          role: 'employee'
+        }
+      },
+      '/auth/me': {
+        id: 1,
+        ibmId: 'EMP001',
+        name: 'John Doe',
+        email: 'john.doe@ibm.com',
+        role: 'employee'
+      }
+    };
+  }
 } else {
   // Normal environment-based configuration
   apiBaseURL = API_CONFIG[environment]?.baseURL || API_CONFIG.development.baseURL;

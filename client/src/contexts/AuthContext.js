@@ -24,8 +24,54 @@ export const AuthProvider = ({ children }) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }
 
+  // Mock API responses for GitHub Pages
+  const mockResponses = {
+    '/auth/login': {
+      success: true,
+      token: 'mock-jwt-token-EMP001-12345',
+      user: {
+        id: 1,
+        ibmId: 'EMP001',
+        name: 'John Doe',
+        email: 'john.doe@ibm.com',
+        role: 'employee'
+      }
+    },
+    '/auth/me': {
+      id: 1,
+      ibmId: 'EMP001',
+      name: 'John Doe',
+      email: 'john.doe@ibm.com',
+      role: 'employee'
+    }
+  };
+
   const login = async (ibmId, password) => {
     try {
+      // Check if we're in mock mode (GitHub Pages)
+      if (window.location.hostname === 'sandeepvanga22.github.io') {
+        console.log('🔧 Using mock login for GitHub Pages');
+        
+        // Create mock response based on IBM ID
+        const mockUser = {
+          id: Date.now(),
+          ibmId,
+          name: `${ibmId} User`,
+          email: `${ibmId.toLowerCase()}@ibm.com`,
+          role: 'employee'
+        };
+        
+        const mockToken = `mock-jwt-token-${ibmId}-${Date.now()}`;
+        
+        setToken(mockToken);
+        setUser(mockUser);
+        localStorage.setItem('token', mockToken);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${mockToken}`;
+        
+        return { success: true };
+      }
+      
+      // Normal API call
       const response = await axios.post('/auth/login', { ibmId, password });
       const { token: newToken, user: userData } = response.data;
       
@@ -55,6 +101,28 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
+        // Check if we're in mock mode (GitHub Pages)
+        if (window.location.hostname === 'sandeepvanga22.github.io') {
+          console.log('🔧 Using mock auth check for GitHub Pages');
+          
+          // Extract IBM ID from mock token
+          const ibmIdMatch = token.match(/mock-jwt-token-([^-]+)/);
+          const ibmId = ibmIdMatch ? ibmIdMatch[1] : 'EMP001';
+          
+          const mockUser = {
+            id: 1,
+            ibmId,
+            name: `${ibmId} User`,
+            email: `${ibmId.toLowerCase()}@ibm.com`,
+            role: 'employee'
+          };
+          
+          setUser(mockUser);
+          setIsAuthenticated(true);
+          return;
+        }
+        
+        // Normal API call
         const response = await axios.get('/auth/me', {
           headers: { Authorization: `Bearer ${token}` }
         });
