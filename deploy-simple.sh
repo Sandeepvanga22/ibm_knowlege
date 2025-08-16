@@ -1,28 +1,30 @@
 #!/bin/bash
 
-echo "🚀 IBM Knowledge Ecosystem - Simple Deployment"
-echo "=============================================="
-echo ""
+echo "🚀 IBM Knowledge Ecosystem - Simple Local Deployment"
+echo "=================================================="
 
-# Build the React app
-echo "📦 Building React app..."
-cd client && npm run build && cd ..
+# Colors
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
 
-echo ""
-echo "✅ Build completed successfully!"
-echo ""
-echo "🌐 To deploy to Netlify and get your public URL:"
-echo ""
-echo "1. Go to: https://app.netlify.com/start"
-echo "2. Click 'Deploy manually'"
-echo "3. Drag and drop the 'client/build' folder to the deployment area"
-echo "4. Your site will be deployed and you'll get a public URL!"
-echo ""
-echo "📱 Your app is currently running locally at:"
-echo "   http://localhost:3001"
-echo ""
-echo "🎯 Your public URL will be something like:"
-echo "   https://your-site-name.netlify.app"
-echo ""
-echo "🔧 To connect frontend to backend:"
-echo "   Add environment variable: REACT_APP_API_URL=https://your-backend-url.com"
+echo -e "${BLUE}📦 Building the React app...${NC}"
+cd client
+npm run build
+
+echo -e "${GREEN}✅ Build completed successfully!${NC}"
+
+echo -e "${BLUE}🌐 Starting local server...${NC}"
+echo -e "${YELLOW}Your IBM Knowledge Ecosystem is now running at:${NC}"
+echo -e "${GREEN}http://localhost:3001${NC}"
+
+echo -e "\n${BLUE}🎯 Demo Access:${NC}"
+echo -e "${YELLOW}IBM ID:${NC} EMP001, EMP002, EMP003"
+echo -e "${YELLOW}Password:${NC} Any password (demo mode)"
+
+echo -e "\n${GREEN}🎉 Your IBM Knowledge Ecosystem is now accessible!${NC}"
+echo -e "${YELLOW}Press Ctrl+C to stop the server${NC}"
+
+# Start the server
+npx serve -s build -l 3001
