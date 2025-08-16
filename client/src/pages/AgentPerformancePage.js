@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import { mockData } from '../utils/mockData';
 
 const AgentPerformancePage = () => {
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [showAgentDetails, setShowAgentDetails] = useState(false);
+  const [customQuestion, setCustomQuestion] = useState('');
+  const [customTags, setCustomTags] = useState('');
+  const [testingWithCustom, setTestingWithCustom] = useState(false);
+  const [testResults, setTestResults] = useState({});
+  const [isTesting, setIsTesting] = useState(false);
 
   const { data: agentPerformance, isLoading: performanceLoading } = useQuery(
     'agent-performance',
-    () => axios.get('/agents/performance').then(res => res.data)
+    () => axios.get('/agents/performance').then(res => res.data),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+    }
   );
+
+  // Use mock data as fallback
+  const agentPerformanceData = agentPerformance || mockData.agentPerformance;
 
   const agents = [
     {
@@ -81,145 +95,48 @@ const AgentPerformancePage = () => {
 
   const handleTestAgent = async (agentId) => {
     try {
-      // Dynamic test questions for each agent
-      const testQuestions = {
-        smartRouting: [
-          {
-            title: "How to deploy Watson AI models?",
-            content: "I need help deploying Watson AI models to Kubernetes clusters.",
-            tags: ["watson", "kubernetes", "ai", "deployment"]
-          },
-          {
-            title: "Docker container optimization",
-            content: "What are the best practices for optimizing Docker container performance?",
-            tags: ["docker", "performance", "optimization", "containers"]
-          },
-          {
-            title: "Kubernetes security configuration",
-            content: "How to configure security policies in Kubernetes clusters?",
-            tags: ["kubernetes", "security", "policies", "configuration"]
-          }
-        ],
-        duplicateDetection: [
-          {
-            title: "How to deploy Watson AI models?",
-            content: "I need help deploying Watson AI models to Kubernetes clusters.",
-            tags: ["watson", "kubernetes", "ai", "deployment"]
-          },
-          {
-            title: "Watson AI deployment guide",
-            content: "Looking for a step-by-step guide to deploy Watson AI models.",
-            tags: ["watson", "deployment", "guide", "ai"]
-          },
-          {
-            title: "Deploying AI models on Kubernetes",
-            content: "Need assistance with deploying AI models on Kubernetes platform.",
-            tags: ["ai", "kubernetes", "deployment", "models"]
-          },
-          {
-            title: "Docker container optimization",
-            content: "What are the best practices for optimizing Docker container performance?",
-            tags: ["docker", "performance", "optimization", "containers"]
-          },
-          {
-            title: "Docker performance best practices",
-            content: "Looking for tips to improve Docker container performance.",
-            tags: ["docker", "performance", "best-practices", "containers"]
-          },
-          {
-            title: "Kubernetes security configuration",
-            content: "How to configure security policies in Kubernetes clusters?",
-            tags: ["kubernetes", "security", "policies", "configuration"]
-          },
-          {
-            title: "Kubernetes security setup",
-            content: "Need help setting up security configurations for Kubernetes.",
-            tags: ["kubernetes", "security", "setup", "configuration"]
-          }
-        ],
-        knowledgeGap: [
-          {
-            title: "Missing Watson AI Documentation",
-            content: "I cannot find proper documentation for training custom Watson AI models.",
-            tags: ["watson", "ai", "documentation", "training", "missing"]
-          },
-          {
-            title: "No guides for Docker security",
-            content: "There are no comprehensive guides for Docker security best practices.",
-            tags: ["docker", "security", "guides", "missing"]
-          },
-          {
-            title: "Kubernetes troubleshooting docs",
-            content: "Missing documentation for common Kubernetes troubleshooting scenarios.",
-            tags: ["kubernetes", "troubleshooting", "documentation", "missing"]
-          }
-        ],
-        expertiseDiscovery: [
-          {
-            title: "Docker Security Best Practices",
-            content: "I need to implement security best practices for our Docker containers.",
-            tags: ["docker", "security", "containers", "vulnerabilities"]
-          },
-          {
-            title: "Kubernetes networking expert needed",
-            content: "Need expert help with complex Kubernetes networking configurations.",
-            tags: ["kubernetes", "networking", "expert", "configuration"]
-          },
-          {
-            title: "Watson AI model training",
-            content: "Looking for someone experienced in training custom Watson AI models.",
-            tags: ["watson", "ai", "training", "models", "expert"]
-          }
-        ]
-      };
-
-      // Get random question for the agent
-      const agentQuestions = testQuestions[agentId];
-      const randomIndex = Math.floor(Math.random() * agentQuestions.length);
-      const testData = agentQuestions[randomIndex];
+      console.log(`🧪 Testing agent: ${agentId}`);
       
-      // Create a more detailed test result
+      // Call the agent test API endpoint
+      const response = await axios.get(`/agents/test/${agentId}`);
+      const testResult = response.data;
+      
       const agentName = agents.find(a => a.id === agentId).name;
-      const testResult = {
-        agent: agentName,
-        question: testData.title,
-        content: testData.content,
-        tags: testData.tags.join(', '),
-        timestamp: new Date().toLocaleTimeString()
-      };
-
-      // Show detailed test result with agent-specific analysis
+      
+      // Create detailed result message
       let resultMessage = `
-🤖 ${testResult.agent} Test Result
+🤖 ${agentName} Test Result
 
-📝 Question: ${testResult.question}
-📄 Content: ${testResult.content}
-🏷️ Tags: ${testResult.tags}
-⏰ Time: ${testResult.timestamp}
+📝 Question: ${testResult.result.question.title}
+📄 Content: ${testResult.result.question.content}
+🏷️ Tags: ${testResult.result.question.tags.join(', ')}
+⏰ Processing Time: ${testResult.result.processingTime}ms
+🎯 Confidence: ${testResult.result.confidence}%
+🕐 Timestamp: ${new Date(testResult.timestamp).toLocaleTimeString()}
       `;
 
       // Add agent-specific analysis
-      if (agentId === 'duplicateDetection') {
-        resultMessage += `
-
-🔍 Duplicate Detection Analysis:
-• Scanning for similar questions in database...
-• Comparing content, tags, and context...
-• Found potential duplicates: 2-3 similar questions
-• Similarity score: 85-92%
-• Recommendation: Check existing answers first
-
-✅ Agent processed the question successfully!
-        `;
-      } else if (agentId === 'smartRouting') {
+      const analysis = testResult.result.analysis;
+      if (agentId === 'smartRouting') {
         resultMessage += `
 
 🎯 Smart Routing Analysis:
-• Analyzing question content and tags...
-• Identifying relevant experts...
-• Routing to: Cloud Development team
-• Confidence score: 87%
-• Expert match: John Doe (Watson AI specialist)
+• ${analysis.analysis}
+• Routing to: ${analysis.routing}
+• Confidence score: ${analysis.confidence}
+• Expert match: ${analysis.expert}
+• Recommendation: ${analysis.recommendation}
+
+✅ Agent processed the question successfully!
+        `;
+      } else if (agentId === 'duplicateDetection') {
+        resultMessage += `
+
+🔍 Duplicate Detection Analysis:
+• ${analysis.analysis}
+• ${analysis.duplicates}
+• Similarity score: ${analysis.similarity}
+• Recommendation: ${analysis.recommendation}
 
 ✅ Agent processed the question successfully!
         `;
@@ -227,11 +144,10 @@ const AgentPerformancePage = () => {
         resultMessage += `
 
 📚 Knowledge Gap Analysis:
-• Analyzing question patterns...
-• Checking documentation coverage...
-• Gap identified: Missing comprehensive guides
-• Priority: High
-• Recommendation: Create new documentation
+• ${analysis.analysis}
+• Gap identified: ${analysis.gap}
+• Priority: ${analysis.priority}
+• Recommendation: ${analysis.recommendation}
 
 ✅ Agent processed the question successfully!
         `;
@@ -239,37 +155,228 @@ const AgentPerformancePage = () => {
         resultMessage += `
 
 👥 Expertise Discovery Analysis:
-• Analyzing user activity patterns...
-• Identifying expertise areas...
-• Expert found: Sarah Johnson (Docker specialist)
-• Expertise level: Advanced
-• Match confidence: 89%
-
-✅ Agent processed the question successfully!
-        `;
-      } else {
-        resultMessage += `
+• ${analysis.analysis}
+• Expert found: ${analysis.expert}
+• Expertise level: ${analysis.expertise}
+• Match confidence: ${analysis.confidence}
+• Recommendation: ${analysis.recommendation}
 
 ✅ Agent processed the question successfully!
         `;
       }
 
       resultMessage = resultMessage.trim();
-
       alert(resultMessage);
+      
+      console.log('🧪 Agent test completed:', testResult);
     } catch (error) {
       console.error('Error testing agent:', error);
+      alert(`❌ Error testing agent: ${error.message}`);
     }
   };
 
+  const handleTestWithCustomQuestion = async () => {
+    if (!customQuestion.trim()) {
+      alert('Please enter a question to test with agents');
+      return;
+    }
+
+    setIsTesting(true);
+    setTestResults({});
+    const agents = ['smartRouting', 'duplicateDetection', 'knowledgeGap', 'expertiseDiscovery'];
+    const results = {};
+
+    try {
+      // Test all agents with the custom question
+      for (const agentId of agents) {
+        console.log(`🧪 Testing ${agentId} with custom question`);
+        
+        // Create a custom question object
+        const questionData = {
+          title: customQuestion,
+          content: customQuestion,
+          tags: customTags.split(',').map(tag => tag.trim()).filter(tag => tag)
+        };
+
+        // Call the agent test API with custom question data
+        const response = await axios.post(`/agents/test/${agentId}`, { question: questionData });
+        results[agentId] = response.data;
+      }
+      
+      setTestResults(results);
+      setTestingWithCustom(true);
+      console.log('🧪 All agents tested with custom question:', results);
+    } catch (error) {
+      console.error('Error testing agents with custom question:', error);
+      alert(`❌ Error testing agents: ${error.message}`);
+    } finally {
+      setIsTesting(false);
+    }
+  };
+
+  const clearCustomTest = () => {
+    setCustomQuestion('');
+    setCustomTags('');
+    setTestResults({});
+    setTestingWithCustom(false);
+  };
+
   if (performanceLoading) {
-    return <div className="loading">Loading agent performance...</div>;
+    return (
+      <div className="loading" style={{ textAlign: 'center', padding: '2rem' }}>
+        <div style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>Loading agent performance...</div>
+        <div style={{ color: '#666' }}>Please wait while we fetch the agent data</div>
+      </div>
+    );
   }
 
   return (
     <div>
       <h1>Agent Performance</h1>
       <p>Monitor the performance and capabilities of the intelligent agent framework.</p>
+
+      {/* Custom Question Testing Section */}
+      <div className="card" style={{ marginBottom: '2rem' }}>
+        <h3>🧪 Test Agents with Any Question</h3>
+        <p style={{ marginBottom: '1.5rem', color: '#666' }}>
+          Enter any question below to test how our AI agents would analyze and process it:
+        </p>
+        
+        <div style={{ marginBottom: '1rem' }}>
+          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            Question:
+          </label>
+          <textarea
+            value={customQuestion}
+            onChange={(e) => setCustomQuestion(e.target.value)}
+            placeholder="Enter any question you want to test with agents (e.g., 'How to implement generative AI in our cloud platform?')"
+            style={{
+              width: '100%',
+              minHeight: '100px',
+              padding: '0.75rem',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              fontSize: '1rem',
+              fontFamily: 'inherit'
+            }}
+          />
+        </div>
+        
+        <div style={{ marginBottom: '1.5rem' }}>
+          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            Tags (optional, comma-separated):
+          </label>
+          <input
+            type="text"
+            value={customTags}
+            onChange={(e) => setCustomTags(e.target.value)}
+            placeholder="e.g., ai, cloud, deployment, kubernetes"
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              fontSize: '1rem'
+            }}
+          />
+        </div>
+        
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <button
+            onClick={handleTestWithCustomQuestion}
+            disabled={isTesting || !customQuestion.trim()}
+            className="btn"
+            style={{ minWidth: '200px' }}
+          >
+            {isTesting ? '🤖 Testing Agents...' : '🧪 Test All Agents'}
+          </button>
+          
+          {testingWithCustom && (
+            <button
+              onClick={clearCustomTest}
+              className="btn btn-secondary"
+            >
+              Clear Results
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Custom Test Results */}
+      {isTesting && (
+        <div className="card" style={{ marginBottom: '2rem', textAlign: 'center' }}>
+          <h3>🤖 AI Agents Analyzing Your Question...</h3>
+          <div style={{ padding: '2rem' }}>
+            <div style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>Processing with all four AI agents</div>
+            <div style={{ color: '#666' }}>Please wait while our intelligent agents analyze your question</div>
+          </div>
+        </div>
+      )}
+
+      {testingWithCustom && Object.keys(testResults).length > 0 && (
+        <div className="card" style={{ marginBottom: '2rem' }}>
+          <h3>🤖 AI Agent Analysis Results</h3>
+          <p style={{ marginBottom: '1.5rem', color: '#666' }}>
+            Our intelligent agents have analyzed your question and provided recommendations:
+          </p>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+            {/* Smart Routing Agent */}
+            {testResults.smartRouting && (
+              <div style={{ padding: '1.5rem', border: '2px solid #24a148', borderRadius: '8px', background: '#f8fff8' }}>
+                <h4 style={{ color: '#24a148', marginBottom: '1rem' }}>🎯 Smart Routing Agent</h4>
+                <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+                  <p><strong>Analysis:</strong> {testResults.smartRouting.result.analysis.analysis}</p>
+                  <p><strong>Routing:</strong> {testResults.smartRouting.result.analysis.routing}</p>
+                  <p><strong>Confidence:</strong> {testResults.smartRouting.result.analysis.confidence}</p>
+                  <p><strong>Expert:</strong> {testResults.smartRouting.result.analysis.expert}</p>
+                  <p><strong>Recommendation:</strong> {testResults.smartRouting.result.analysis.recommendation}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Duplicate Detection Agent */}
+            {testResults.duplicateDetection && (
+              <div style={{ padding: '1.5rem', border: '2px solid #da1e28', borderRadius: '8px', background: '#fff8f8' }}>
+                <h4 style={{ color: '#da1e28', marginBottom: '1rem' }}>🔍 Duplicate Detection Agent</h4>
+                <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+                  <p><strong>Analysis:</strong> {testResults.duplicateDetection.result.analysis.analysis}</p>
+                  <p><strong>Duplicates:</strong> {testResults.duplicateDetection.result.analysis.duplicates}</p>
+                  <p><strong>Similarity:</strong> {testResults.duplicateDetection.result.analysis.similarity}</p>
+                  <p><strong>Recommendation:</strong> {testResults.duplicateDetection.result.analysis.recommendation}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Knowledge Gap Agent */}
+            {testResults.knowledgeGap && (
+              <div style={{ padding: '1.5rem', border: '2px solid #f1c21b', borderRadius: '8px', background: '#fffef0' }}>
+                <h4 style={{ color: '#f1c21b', marginBottom: '1rem' }}>📚 Knowledge Gap Agent</h4>
+                <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+                  <p><strong>Analysis:</strong> {testResults.knowledgeGap.result.analysis.analysis}</p>
+                  <p><strong>Gap:</strong> {testResults.knowledgeGap.result.analysis.gap}</p>
+                  <p><strong>Priority:</strong> {testResults.knowledgeGap.result.analysis.priority}</p>
+                  <p><strong>Recommendation:</strong> {testResults.knowledgeGap.result.analysis.recommendation}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Expertise Discovery Agent */}
+            {testResults.expertiseDiscovery && (
+              <div style={{ padding: '1.5rem', border: '2px solid #6929c4', borderRadius: '8px', background: '#f8f4ff' }}>
+                <h4 style={{ color: '#6929c4', marginBottom: '1rem' }}>👥 Expertise Discovery Agent</h4>
+                <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+                  <p><strong>Analysis:</strong> {testResults.expertiseDiscovery.result.analysis.analysis}</p>
+                  <p><strong>Expert:</strong> {testResults.expertiseDiscovery.result.analysis.expert}</p>
+                  <p><strong>Expertise:</strong> {testResults.expertiseDiscovery.result.analysis.expertise}</p>
+                  <p><strong>Confidence:</strong> {testResults.expertiseDiscovery.result.analysis.confidence}</p>
+                  <p><strong>Recommendation:</strong> {testResults.expertiseDiscovery.result.analysis.recommendation}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Agent Overview */}
       <div className="stats-grid">
@@ -475,15 +582,15 @@ const AgentPerformancePage = () => {
             </div>
 
             {/* Agent Performance Data */}
-            {agentPerformance && (
+            {agentPerformanceData && (
               <div style={{ marginTop: '1.5rem', padding: '1rem', background: '#f8f9fa', borderRadius: '8px' }}>
                 <h4 style={{ margin: '0 0 1rem 0', color: 'var(--ibm-blue)' }}>Performance Data</h4>
-                {agentPerformance.performance && agentPerformance.performance.length > 0 ? (
+                {agentPerformanceData.performance && agentPerformanceData.performance.length > 0 ? (
                   <div>
-                    <p><strong>Total Agents:</strong> {agentPerformance.total_agents}</p>
-                    <p><strong>Total Suggestions:</strong> {agentPerformance.performance.reduce((sum, agent) => sum + parseInt(agent.total_suggestions), 0)}</p>
+                    <p><strong>Total Agents:</strong> {agentPerformanceData.total_agents}</p>
+                    <p><strong>Total Suggestions:</strong> {agentPerformanceData.performance.reduce((sum, agent) => sum + parseInt(agent.total_suggestions), 0)}</p>
                     <p><strong>Average Confidence:</strong> {
-                      (agentPerformance.performance.reduce((sum, agent) => sum + parseFloat(agent.avg_confidence || 0), 0) / agentPerformance.performance.length).toFixed(2)
+                      (agentPerformanceData.performance.reduce((sum, agent) => sum + parseFloat(agent.avg_confidence || 0), 0) / agentPerformanceData.performance.length).toFixed(2)
                     }%</p>
                   </div>
                 ) : (

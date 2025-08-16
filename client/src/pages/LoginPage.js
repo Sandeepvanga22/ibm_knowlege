@@ -73,11 +73,14 @@ const LoginPage = () => {
       </form>
 
       <div style={{ marginTop: '2rem', padding: '1rem', background: '#f8f9fa', borderRadius: '4px' }}>
-        <h4>Demo Credentials:</h4>
+        <h4>Valid Demo IBM IDs:</h4>
         <p><strong>EMP001</strong> - John Doe (Cloud Development, Watson AI)</p>
         <p><strong>EMP002</strong> - Jane Smith (Infrastructure, Red Hat)</p>
         <p><strong>EMP003</strong> - Mike Johnson (Security, Cyber Security)</p>
+        <p><strong>EMP004</strong> - Sarah Wilson (Data Science, Analytics)</p>
+        <p><strong>EMP005</strong> - David Brown (Platform Engineering, OpenShift)</p>
         <p><em>Use any password for demo purposes</em></p>
+        <p><em>Only these IBM IDs are valid for login</em></p>
       </div>
     </div>
   );

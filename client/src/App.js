@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Header from './components/Header';
@@ -10,10 +10,16 @@ import LoginPage from './pages/LoginPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import AgentPerformancePage from './pages/AgentPerformancePage';
 import { AuthProvider } from './contexts/AuthContext';
+import { setupMockApi } from './utils/mockApi';
 
 const queryClient = new QueryClient();
 
 function App() {
+  useEffect(() => {
+    // Initialize mock API for Netlify and GitHub Pages
+    setupMockApi();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>

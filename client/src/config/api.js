@@ -11,8 +11,9 @@ const API_CONFIG = {
   }
 };
 
-// Detect if we're on Vercel or GitHub Pages
+// Detect if we're on Vercel, Netlify, or GitHub Pages
 const isVercel = window.location.hostname.includes('vercel.app');
+const isNetlify = window.location.hostname.includes('netlify.app');
 const isGitHubPages = window.location.hostname === 'sandeepvanga22.github.io';
 
 // Get current environment
@@ -24,38 +25,22 @@ if (isVercel) {
   // For Vercel deployment, use the backend URL
   apiBaseURL = 'https://ibm-knowledge-backend.vercel.app/api';
   console.log('🌐 Vercel detected - using Vercel backend URL');
-} else if (isGitHubPages) {
-  // For GitHub Pages, use mock authentication
-  apiBaseURL = 'https://jsonplaceholder.typicode.com';
-  console.log('🌐 GitHub Pages detected - using mock authentication');
+} else if (isNetlify) {
+  // For Netlify deployment, use relative URLs for mock API
+  apiBaseURL = '';
+  console.log('🌐 Netlify detected - using mock API with relative URLs');
   
   // Enable mock mode for immediate testing
   window.MOCK_MODE = true;
   console.log('🔧 Mock mode enabled for immediate testing');
+} else if (isGitHubPages) {
+  // For GitHub Pages, use relative URLs for mock API
+  apiBaseURL = '';
+  console.log('🌐 GitHub Pages detected - using mock API with relative URLs');
   
-  // Mock API responses for immediate testing
-  if (!window.mockResponses) {
-    window.mockResponses = {
-      '/auth/login': {
-        success: true,
-        token: 'mock-jwt-token-EMP001-12345',
-        user: {
-          id: 1,
-          ibmId: 'EMP001',
-          name: 'John Doe',
-          email: 'john.doe@ibm.com',
-          role: 'employee'
-        }
-      },
-      '/auth/me': {
-        id: 1,
-        ibmId: 'EMP001',
-        name: 'John Doe',
-        email: 'john.doe@ibm.com',
-        role: 'employee'
-      }
-    };
-  }
+  // Enable mock mode for immediate testing
+  window.MOCK_MODE = true;
+  console.log('🔧 Mock mode enabled for immediate testing');
 } else {
   // Normal environment-based configuration
   apiBaseURL = API_CONFIG[environment]?.baseURL || API_CONFIG.development.baseURL;
@@ -65,6 +50,8 @@ if (isVercel) {
 export const API_BASE_URL = apiBaseURL;
 
 // For debugging
-console.log(`🌐 API Base URL: ${API_BASE_URL} (Environment: ${environment}, Vercel: ${isVercel}, GitHub Pages: ${isGitHubPages})`);
+console.log(`🌐 API Base URL: ${API_BASE_URL} (Environment: ${environment}, Vercel: ${isVercel}, Netlify: ${isNetlify}, GitHub Pages: ${isGitHubPages})`);
+
+// Mock API will be initialized in App.js
 
 export default API_CONFIG; 

@@ -2,25 +2,51 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { mockData } from '../utils/mockData';
 
 const HomePage = () => {
   const { data: dashboard, isLoading: dashboardLoading } = useQuery(
     'dashboard',
-    () => axios.get('/analytics/dashboard').then(res => res.data.dashboard)
+    () => axios.get('/analytics/dashboard').then(res => res.data.dashboard),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    }
   );
 
   const { data: questions, isLoading: questionsLoading } = useQuery(
     'recent-questions',
-    () => axios.get('/questions?limit=5').then(res => res.data.questions)
+    () => axios.get('/questions?limit=5').then(res => res.data.questions),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    }
   );
 
   const { data: users, isLoading: usersLoading } = useQuery(
     'users',
-    () => axios.get('/users').then(res => res.data.users)
+    () => axios.get('/users').then(res => res.data.users),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    }
   );
 
+  // Use mock data as fallback
+  const dashboardData = dashboard || mockData.dashboard;
+  const questionsData = questions || mockData.questions.slice(0, 5);
+  const usersData = users || mockData.users;
+
   if (dashboardLoading || questionsLoading || usersLoading) {
-    return <div className="loading">Loading dashboard...</div>;
+    return (
+      <div className="loading" style={{ textAlign: 'center', padding: '2rem' }}>
+        <div style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>Loading dashboard...</div>
+        <div style={{ color: '#666' }}>Please wait while we fetch the latest data</div>
+      </div>
+    );
   }
 
   return (
@@ -31,19 +57,19 @@ const HomePage = () => {
       {/* Stats Grid */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-number">{dashboard?.counts?.total_users || 0}</div>
+          <div className="stat-number">{dashboardData?.counts?.total_users || 0}</div>
           <div className="stat-label">Total Users</div>
         </div>
         <div className="stat-card">
-          <div className="stat-number">{dashboard?.counts?.total_questions || 0}</div>
+          <div className="stat-number">{dashboardData?.counts?.total_questions || 0}</div>
           <div className="stat-label">Total Questions</div>
         </div>
         <div className="stat-card">
-          <div className="stat-number">{dashboard?.counts?.total_answers || 0}</div>
+          <div className="stat-number">{dashboardData?.counts?.total_answers || 0}</div>
           <div className="stat-label">Total Answers</div>
         </div>
         <div className="stat-card">
-          <div className="stat-number">{users?.length || 0}</div>
+          <div className="stat-number">{usersData?.length || 0}</div>
           <div className="stat-label">Active Users</div>
         </div>
       </div>
@@ -70,9 +96,9 @@ const HomePage = () => {
       {/* Recent Questions */}
       <div className="card">
         <h3>Recent Questions</h3>
-        {questions && questions.length > 0 ? (
+        {questionsData && questionsData.length > 0 ? (
           <div>
-            {questions.slice(0, 5).map(question => (
+            {questionsData.slice(0, 5).map(question => (
               <div key={question.id} className="question-card card" style={{ marginBottom: '1rem' }}>
                 <h4>
                   <Link to={`/questions/${question.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>

@@ -14,9 +14,9 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
-  const [isAuthenticated, setIsAuthenticated] = useState(!!user);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Configure axios defaults
   axios.defaults.baseURL = API_BASE_URL;
@@ -24,40 +24,40 @@ export const AuthProvider = ({ children }) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }
 
-  // Mock API responses for GitHub Pages
-  const mockResponses = {
-    '/auth/login': {
-      success: true,
-      token: 'mock-jwt-token-EMP001-12345',
-      user: {
-        id: 1,
-        ibmId: 'EMP001',
-        name: 'John Doe',
-        email: 'john.doe@ibm.com',
-        role: 'employee'
-      }
-    },
-    '/auth/me': {
-      id: 1,
-      ibmId: 'EMP001',
-      name: 'John Doe',
-      email: 'john.doe@ibm.com',
-      role: 'employee'
-    }
-  };
-
   const login = async (ibmId, password) => {
     try {
-      // Check if we're in mock mode (GitHub Pages)
-      if (window.location.hostname === 'sandeepvanga22.github.io') {
-        console.log('🔧 Using mock login for GitHub Pages');
+      // Check if we're in mock mode (GitHub Pages or Netlify)
+      if (window.location.hostname === 'sandeepvanga22.github.io' || window.location.hostname.includes('netlify.app')) {
+        console.log('🔧 Using mock login for GitHub Pages/Netlify');
+        
+        // Validate IBM ID format (EMP followed by 3 digits)
+        const ibmIdPattern = /^EMP\d{3}$/;
+        if (!ibmIdPattern.test(ibmId)) {
+          return { 
+            success: false, 
+            error: 'Invalid IBM ID format. Please use format: EMP001, EMP002, etc.' 
+          };
+        }
+        
+        // Check if it's a valid demo IBM ID
+        const validIbmIds = ['EMP001', 'EMP002', 'EMP003', 'EMP004', 'EMP005'];
+        if (!validIbmIds.includes(ibmId)) {
+          return { 
+            success: false, 
+            error: 'Invalid IBM ID. Please use one of the demo IDs: EMP001, EMP002, EMP003, EMP004, EMP005' 
+          };
+        }
         
         // Create mock response based on IBM ID
         const mockUser = {
           id: Date.now(),
           ibmId,
+          firstName: ibmId === 'EMP001' ? 'John' : ibmId === 'EMP002' ? 'Jane' : ibmId === 'EMP003' ? 'Mike' : ibmId === 'EMP004' ? 'Sarah' : 'David',
+          lastName: ibmId === 'EMP001' ? 'Doe' : ibmId === 'EMP002' ? 'Smith' : ibmId === 'EMP003' ? 'Johnson' : ibmId === 'EMP004' ? 'Wilson' : 'Brown',
           name: `${ibmId} User`,
           email: `${ibmId.toLowerCase()}@ibm.com`,
+          department: ibmId === 'EMP001' ? 'Cloud Development' : ibmId === 'EMP002' ? 'Infrastructure' : ibmId === 'EMP003' ? 'Security' : ibmId === 'EMP004' ? 'Data Science' : 'Platform Engineering',
+          team: ibmId === 'EMP001' ? 'Watson AI' : ibmId === 'EMP002' ? 'Red Hat' : ibmId === 'EMP003' ? 'Cyber Security' : ibmId === 'EMP004' ? 'Analytics' : 'OpenShift',
           role: 'employee'
         };
         
@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }) => {
         
         setToken(mockToken);
         setUser(mockUser);
+        setIsAuthenticated(true);
         localStorage.setItem('token', mockToken);
         axios.defaults.headers.common['Authorization'] = `Bearer ${mockToken}`;
         
@@ -77,6 +78,7 @@ export const AuthProvider = ({ children }) => {
       
       setToken(newToken);
       setUser(userData);
+      setIsAuthenticated(true);
       localStorage.setItem('token', newToken);
       axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       
@@ -93,6 +95,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     setToken(null);
+    setIsAuthenticated(false);
     localStorage.removeItem('token');
     delete axios.defaults.headers.common['Authorization'];
   };
@@ -101,24 +104,40 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        // Check if we're in mock mode (GitHub Pages)
-        if (window.location.hostname === 'sandeepvanga22.github.io') {
-          console.log('🔧 Using mock auth check for GitHub Pages');
+        // Check if we're in mock mode (GitHub Pages or Netlify)
+        if (window.location.hostname === 'sandeepvanga22.github.io' || window.location.hostname.includes('netlify.app')) {
+          console.log('🔧 Using mock auth check for GitHub Pages/Netlify');
           
           // Extract IBM ID from mock token
           const ibmIdMatch = token.match(/mock-jwt-token-([^-]+)/);
           const ibmId = ibmIdMatch ? ibmIdMatch[1] : 'EMP001';
           
+          // Validate IBM ID
+          const validIbmIds = ['EMP001', 'EMP002', 'EMP003', 'EMP004', 'EMP005'];
+          if (!validIbmIds.includes(ibmId)) {
+            // Invalid IBM ID, clear token and return
+            localStorage.removeItem('token');
+            setUser(null);
+            setIsAuthenticated(false);
+            setLoading(false);
+            return;
+          }
+          
           const mockUser = {
             id: 1,
             ibmId,
+            firstName: ibmId === 'EMP001' ? 'John' : ibmId === 'EMP002' ? 'Jane' : ibmId === 'EMP003' ? 'Mike' : ibmId === 'EMP004' ? 'Sarah' : 'David',
+            lastName: ibmId === 'EMP001' ? 'Doe' : ibmId === 'EMP002' ? 'Smith' : ibmId === 'EMP003' ? 'Johnson' : ibmId === 'EMP004' ? 'Wilson' : 'Brown',
             name: `${ibmId} User`,
             email: `${ibmId.toLowerCase()}@ibm.com`,
+            department: ibmId === 'EMP001' ? 'Cloud Development' : ibmId === 'EMP002' ? 'Infrastructure' : ibmId === 'EMP003' ? 'Security' : ibmId === 'EMP004' ? 'Data Science' : 'Platform Engineering',
+            team: ibmId === 'EMP001' ? 'Watson AI' : ibmId === 'EMP002' ? 'Red Hat' : ibmId === 'EMP003' ? 'Cyber Security' : ibmId === 'EMP004' ? 'Analytics' : 'OpenShift',
             role: 'employee'
           };
           
           setUser(mockUser);
           setIsAuthenticated(true);
+          setLoading(false);
           return;
         }
         
@@ -128,20 +147,28 @@ export const AuthProvider = ({ children }) => {
         });
         setUser(response.data);
         setIsAuthenticated(true);
+        setLoading(false);
       } catch (error) {
         localStorage.removeItem('token');
         setUser(null);
         setIsAuthenticated(false);
+        setLoading(false);
       }
     } else {
       setUser(null);
       setIsAuthenticated(false);
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  // Update isAuthenticated when user changes
+  useEffect(() => {
+    setIsAuthenticated(!!user);
+  }, [user]);
 
   const value = {
     user,

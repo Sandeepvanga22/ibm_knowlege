@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "IBM Knowledge Ecosystem Frontend",
   "private": true,
-  "homepage": "https://sandeepvanga22.github.io/ibm_knowlege",
+  "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",

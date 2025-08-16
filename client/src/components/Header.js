@@ -38,12 +38,12 @@ const Header = () => {
             {isAuthenticated ? (
               <>
                 <div className="user-avatar">
-                  {user?.firstName?.charAt(0) || user?.ibmId?.charAt(0) || 'U'}
+                  {user?.firstName?.charAt(0) || user?.name?.charAt(0) || user?.ibmId?.charAt(0) || 'U'}
                 </div>
                 <div>
-                  <div>{user?.firstName} {user?.lastName}</div>
+                  <div>{user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.name || user?.ibmId}</div>
                   <div style={{ fontSize: '0.875rem', opacity: 0.8 }}>
-                    {user?.department} • {user?.team}
+                    {user?.department && user?.team ? `${user.department} • ${user.team}` : 'IBM Employee'}
                   </div>
                 </div>
                 <button onClick={logout} className="btn btn-secondary" style={{ marginLeft: '1rem' }}>

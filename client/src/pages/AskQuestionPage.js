@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
+import { mockData } from '../utils/mockData';
 
 const AskQuestionPage = () => {
   const [title, setTitle] = useState('');
@@ -10,22 +11,37 @@ const AskQuestionPage = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showAgentAnalysis, setShowAgentAnalysis] = useState(false);
+  const [agentResults, setAgentResults] = useState({});
+  const [analysisLoading, setAnalysisLoading] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
 
   const { data: tags } = useQuery(
     'tags',
-    () => axios.get('/tags').then(res => res.data.tags)
+    () => axios.get('/tags').then(res => res.data.tags),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+    }
   );
+
+  // Use mock data as fallback
+  const tagsData = tags || mockData.tags;
 
   const createQuestionMutation = useMutation(
     (questionData) => axios.post('/questions', questionData),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries('questions');
+      onSuccess: (data, questionData) => {
+        // Invalidate all questions queries to refresh the data
+        queryClient.invalidateQueries(['questions']);
         queryClient.invalidateQueries('dashboard');
-        navigate('/questions');
+        queryClient.invalidateQueries('recent-questions');
+        
+        // Trigger agent analysis with the posted question
+        triggerAgentAnalysis(questionData);
       },
       onError: (error) => {
         setError(error.response?.data?.message || 'Failed to create question');
@@ -68,6 +84,27 @@ const AskQuestionPage = () => {
         ? prev.filter(tag => tag !== tagName)
         : [...prev, tagName]
     );
+  };
+
+  const triggerAgentAnalysis = async (questionData) => {
+    setAnalysisLoading(true);
+    const agents = ['smartRouting', 'duplicateDetection', 'knowledgeGap', 'expertiseDiscovery'];
+    const results = {};
+
+    try {
+      // Test all agents with the posted question
+      for (const agentId of agents) {
+        const response = await axios.get(`/agents/test/${agentId}`);
+        results[agentId] = response.data;
+      }
+      
+      setAgentResults(results);
+      setShowAgentAnalysis(true);
+    } catch (error) {
+      console.error('Error triggering agent analysis:', error);
+    } finally {
+      setAnalysisLoading(false);
+    }
   };
 
   if (!isAuthenticated) {
@@ -122,7 +159,7 @@ const AskQuestionPage = () => {
         <div className="form-group">
           <label>Tags</label>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-            {tags && tags.map(tag => (
+            {tagsData && tagsData.map(tag => (
               <button
                 key={tag.id}
                 type="button"
@@ -157,6 +194,104 @@ const AskQuestionPage = () => {
           </button>
         </div>
       </form>
+
+      {/* Agent Analysis Section */}
+      {analysisLoading && (
+        <div className="card" style={{ marginTop: '2rem', textAlign: 'center' }}>
+          <h3>🤖 AI Agents Analyzing Your Question...</h3>
+          <div style={{ padding: '2rem' }}>
+            <div style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>Processing with all four AI agents</div>
+            <div style={{ color: '#666' }}>Please wait while our intelligent agents analyze your question</div>
+          </div>
+        </div>
+      )}
+
+      {showAgentAnalysis && (
+        <div className="card" style={{ marginTop: '2rem' }}>
+          <h3>🤖 AI Agent Analysis Results</h3>
+          <p style={{ marginBottom: '1.5rem', color: '#666' }}>
+            Our intelligent agents have analyzed your question and provided recommendations:
+          </p>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+            {/* Smart Routing Agent */}
+            {agentResults.smartRouting && (
+              <div style={{ padding: '1.5rem', border: '2px solid #24a148', borderRadius: '8px', background: '#f8fff8' }}>
+                <h4 style={{ color: '#24a148', marginBottom: '1rem' }}>🎯 Smart Routing Agent</h4>
+                <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+                  <p><strong>Analysis:</strong> {agentResults.smartRouting.result.analysis.analysis}</p>
+                  <p><strong>Routing:</strong> {agentResults.smartRouting.result.analysis.routing}</p>
+                  <p><strong>Confidence:</strong> {agentResults.smartRouting.result.analysis.confidence}</p>
+                  <p><strong>Expert:</strong> {agentResults.smartRouting.result.analysis.expert}</p>
+                  <p><strong>Recommendation:</strong> {agentResults.smartRouting.result.analysis.recommendation}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Duplicate Detection Agent */}
+            {agentResults.duplicateDetection && (
+              <div style={{ padding: '1.5rem', border: '2px solid #da1e28', borderRadius: '8px', background: '#fff8f8' }}>
+                <h4 style={{ color: '#da1e28', marginBottom: '1rem' }}>🔍 Duplicate Detection Agent</h4>
+                <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+                  <p><strong>Analysis:</strong> {agentResults.duplicateDetection.result.analysis.analysis}</p>
+                  <p><strong>Duplicates:</strong> {agentResults.duplicateDetection.result.analysis.duplicates}</p>
+                  <p><strong>Similarity:</strong> {agentResults.duplicateDetection.result.analysis.similarity}</p>
+                  <p><strong>Recommendation:</strong> {agentResults.duplicateDetection.result.analysis.recommendation}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Knowledge Gap Agent */}
+            {agentResults.knowledgeGap && (
+              <div style={{ padding: '1.5rem', border: '2px solid #f1c21b', borderRadius: '8px', background: '#fffef8' }}>
+                <h4 style={{ color: '#f1c21b', marginBottom: '1rem' }}>📚 Knowledge Gap Agent</h4>
+                <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+                  <p><strong>Analysis:</strong> {agentResults.knowledgeGap.result.analysis.analysis}</p>
+                  <p><strong>Gap:</strong> {agentResults.knowledgeGap.result.analysis.gap}</p>
+                  <p><strong>Priority:</strong> {agentResults.knowledgeGap.result.analysis.priority}</p>
+                  <p><strong>Recommendation:</strong> {agentResults.knowledgeGap.result.analysis.recommendation}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Expertise Discovery Agent */}
+            {agentResults.expertiseDiscovery && (
+              <div style={{ padding: '1.5rem', border: '2px solid #6929c4', borderRadius: '8px', background: '#f8f8ff' }}>
+                <h4 style={{ color: '#6929c4', marginBottom: '1rem' }}>👥 Expertise Discovery Agent</h4>
+                <div style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+                  <p><strong>Analysis:</strong> {agentResults.expertiseDiscovery.result.analysis.analysis}</p>
+                  <p><strong>Expert:</strong> {agentResults.expertiseDiscovery.result.analysis.expert}</p>
+                  <p><strong>Expertise Level:</strong> {agentResults.expertiseDiscovery.result.analysis.expertise}</p>
+                  <p><strong>Confidence:</strong> {agentResults.expertiseDiscovery.result.analysis.confidence}</p>
+                  <p><strong>Recommendation:</strong> {agentResults.expertiseDiscovery.result.analysis.recommendation}</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+            <button 
+              onClick={() => navigate('/questions')} 
+              className="btn"
+              style={{ marginRight: '1rem' }}
+            >
+              View All Questions
+            </button>
+            <button 
+              onClick={() => {
+                setShowAgentAnalysis(false);
+                setAgentResults({});
+                setTitle('');
+                setContent('');
+                setSelectedTags([]);
+              }} 
+              className="btn btn-secondary"
+            >
+              Ask Another Question
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Tips */}
       <div className="card" style={{ marginTop: '2rem' }}>
