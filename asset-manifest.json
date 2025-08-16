@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/ibm_knowlege/static/css/main.b4ce1f36.css",
-    "main.js": "/ibm_knowlege/static/js/main.1523c985.js",
+    "main.js": "/ibm_knowlege/static/js/main.e802d384.js",
     "index.html": "/ibm_knowlege/index.html",
     "main.b4ce1f36.css.map": "/ibm_knowlege/static/css/main.b4ce1f36.css.map",
-    "main.1523c985.js.map": "/ibm_knowlege/static/js/main.1523c985.js.map"
+    "main.e802d384.js.map": "/ibm_knowlege/static/js/main.e802d384.js.map"
   },
   "entrypoints": [
     "static/css/main.b4ce1f36.css",
-    "static/js/main.1523c985.js"
+    "static/js/main.e802d384.js"
   ]
 }
