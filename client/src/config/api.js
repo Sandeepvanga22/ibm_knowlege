@@ -4,26 +4,30 @@ const API_CONFIG = {
     baseURL: 'http://localhost:5000/api',
   },
   production: {
-    baseURL: 'https://ibm-knowledge-backend.onrender.com/api',
+    baseURL: 'https://ibm-knowledge-backend.vercel.app/api',
   },
   test: {
     baseURL: 'http://localhost:5000/api',
   }
 };
 
-// Detect if we're on GitHub Pages
+// Detect if we're on Vercel or GitHub Pages
+const isVercel = window.location.hostname.includes('vercel.app');
 const isGitHubPages = window.location.hostname === 'sandeepvanga22.github.io';
 
 // Get current environment
 const environment = process.env.NODE_ENV || 'development';
 
-// Special handling for GitHub Pages
+// Special handling for different hosting platforms
 let apiBaseURL;
-if (isGitHubPages) {
-  // For GitHub Pages, use a working backend URL
-  // Using a simple backend that works immediately
+if (isVercel) {
+  // For Vercel deployment, use the backend URL
+  apiBaseURL = 'https://ibm-knowledge-backend.vercel.app/api';
+  console.log('🌐 Vercel detected - using Vercel backend URL');
+} else if (isGitHubPages) {
+  // For GitHub Pages, use mock authentication
   apiBaseURL = 'https://jsonplaceholder.typicode.com';
-  console.log('🌐 GitHub Pages detected - using working backend URL');
+  console.log('🌐 GitHub Pages detected - using mock authentication');
   
   // Enable mock mode for immediate testing
   window.MOCK_MODE = true;
@@ -61,6 +65,6 @@ if (isGitHubPages) {
 export const API_BASE_URL = apiBaseURL;
 
 // For debugging
-console.log(`🌐 API Base URL: ${API_BASE_URL} (Environment: ${environment}, GitHub Pages: ${isGitHubPages})`);
+console.log(`🌐 API Base URL: ${API_BASE_URL} (Environment: ${environment}, Vercel: ${isVercel}, GitHub Pages: ${isGitHubPages})`);
 
 export default API_CONFIG; 
