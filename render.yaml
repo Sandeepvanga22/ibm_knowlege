@@ -6,6 +6,7 @@ services:
     plan: free
     buildCommand: npm install
     startCommand: npm start
+    rootDir: server
     envVars:
       - key: NODE_ENV
         value: production
@@ -16,7 +17,7 @@ services:
       - key: ENABLE_MOCK_DATA
         value: true
       - key: CORS_ORIGIN
-        value: https://ibm-knowledge-ecosystem-9821fgfbw-sandeeps-projects-08af41b7.vercel.app
+        value: https://sandeepvanga22.github.io
       - key: DATABASE_URL
         fromDatabase:
           name: ibm-knowledge-db
