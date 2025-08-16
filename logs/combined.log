@@ -2919,3 +2919,27 @@
 {"duration":2,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.created_at, u.first_name, u.last_name\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      ORDER BY q.created_at DESC\n      LIMIT 5\n    ","timestamp":"2025-08-16 23:20:38:2038"}
 {"duration":29,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.content, q.status, q.view_count, q.vote_count, q.created_at,\n             u.first_name, u.last_name,\n             array_agg(t.name) as tags\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      LEFT JOIN question_tags qt ON q.id = qt.question_id\n      LEFT JOIN tags t ON qt.tag_id = t.id\n    \n      GROUP BY q.id, u.first_name, u.last_name\n      ORDER BY q.created_at DESC\n      LIMIT $1 OFFSET $2\n    ","timestamp":"2025-08-16 23:20:38:2038"}
 {"duration":1,"level":"debug","message":"Executed query","rows":0,"text":"\n      SELECT agent_type, \n             COUNT(*) as total_suggestions,\n             AVG(confidence_score) as avg_confidence,\n             COUNT(CASE WHEN accepted = true THEN 1 END) as accepted_count\n      FROM agent_suggestions\n      WHERE created_at >= NOW() - INTERVAL '7 days'\n      GROUP BY agent_type\n    ","timestamp":"2025-08-16 23:20:38:2038"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:21:20:2120"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:21:20:2120"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:21:20:2120"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:21:20:2120"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:21:20:2120"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:21:20:2120"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:21:23:2123"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:21:23:2123"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:21:23:2123"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:21:23:2123"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:21:23:2123"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:21:23:2123"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:21:24:2124"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:21:24:2124"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:21:24:2124"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:21:24:2124"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:21:24:2124"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:21:24:2124"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:21:26:2126"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:21:26:2126"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:21:26:2126"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:21:26:2126"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:21:26:2126"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:21:26:2126"}
