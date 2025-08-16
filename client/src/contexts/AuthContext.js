@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [isAuthenticated, setIsAuthenticated] = useState(!!user);
 
   // Configure axios defaults
   axios.defaults.baseURL = 'http://localhost:5000/api';
@@ -49,22 +50,25 @@ export const AuthProvider = ({ children }) => {
     delete axios.defaults.headers.common['Authorization'];
   };
 
-  const checkAuth = async () => {
-    if (!token) {
-      setLoading(false);
-      return;
+  const checkAuth = useCallback(async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const response = await axios.get('/auth/me', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUser(response.data);
+        setIsAuthenticated(true);
+      } catch (error) {
+        localStorage.removeItem('token');
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+    } else {
+      setUser(null);
+      setIsAuthenticated(false);
     }
-
-    try {
-      const response = await axios.get('/auth/me');
-      setUser(response.data.user);
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      logout();
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, []);
 
   useEffect(() => {
     checkAuth();
@@ -75,7 +79,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     logout,
-    isAuthenticated: !!user,
+    isAuthenticated,
   };
 
   return (
