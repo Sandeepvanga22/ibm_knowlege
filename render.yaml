@@ -1,5 +1,5 @@
 services:
-  # Backend API Service
+  # Backend Web Service
   - type: web
     name: ibm-knowledge-backend
     env: node
@@ -10,22 +10,20 @@ services:
       - key: NODE_ENV
         value: production
       - key: JWT_SECRET
-        generateValue: true
+        value: ibm-knowledge-ecosystem-super-secret-jwt-key-2024
+      - key: AGENT_CONFIDENCE_THRESHOLD
+        value: 0.7
+      - key: ENABLE_MOCK_DATA
+        value: true
+      - key: CORS_ORIGIN
+        value: https://ibm-knowledge-ecosystem-9821fgfbw-sandeeps-projects-08af41b7.vercel.app
       - key: DATABASE_URL
-        sync: false
-      - key: REDIS_URL
-        sync: false
-      - key: PORT
-        value: 10000
-    healthCheckPath: /api/health
+        fromDatabase:
+          name: ibm-knowledge-db
+          property: connectionString
 
-  # Frontend Web Service
-  - type: web
-    name: ibm-knowledge-frontend
-    env: static
-    plan: free
-    buildCommand: cd client && npm install && npm run build
-    staticPublishPath: client/build
-    envVars:
-      - key: REACT_APP_API_URL
-        value: https://ibm-knowledge-backend.onrender.com 
+databases:
+  # PostgreSQL Database
+  - name: ibm-knowledge-db
+    databaseName: ibm_knowledge
+    plan: free 
