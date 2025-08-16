@@ -135,6 +135,29 @@ deploy_docker() {
     echo "  Backend:  http://localhost:5000"
 }
 
+# Function to deploy to Netlify
+deploy_netlify() {
+    print_status "Deploying to Netlify..."
+    
+    if ! command_exists netlify; then
+        print_warning "Netlify CLI not found. Please install it first:"
+        echo "npm install -g netlify-cli"
+        echo ""
+        print_status "Or deploy manually using Netlify dashboard:"
+        echo "1. Go to https://netlify.com"
+        echo "2. Click 'New site from Git'"
+        echo "3. Connect your GitHub repository"
+        echo "4. Build command: cd client && npm install && npm run build"
+        echo "5. Publish directory: client/build"
+        return 1
+    fi
+    
+    netlify login
+    netlify deploy --prod
+    print_success "Deployment to Netlify completed!"
+    print_status "Your site will be available at: https://your-site-name.netlify.app"
+}
+
 # Function to deploy to Railway
 deploy_railway() {
     print_status "Deploying to Railway..."
@@ -158,27 +181,32 @@ show_options() {
     echo "🚀 IBM Knowledge Ecosystem - Deployment Options"
     echo "================================================"
     echo ""
-    echo "1. Render (Recommended - Free tier available)"
+    echo "1. Netlify (Public URL like your friend's site)"
+    echo "   - Public URL accessible anywhere"
+    echo "   - Free hosting with custom domain"
+    echo "   - Perfect for portfolio/demo"
+    echo ""
+    echo "2. Render (Recommended - Free tier available)"
     echo "   - Easy deployment"
     echo "   - Free PostgreSQL and Redis"
     echo "   - Automatic HTTPS"
     echo ""
-    echo "2. Vercel (Free tier available)"
+    echo "3. Vercel (Free tier available)"
     echo "   - Great for React apps"
     echo "   - Serverless functions"
     echo "   - Global CDN"
     echo ""
-    echo "3. Docker (Local or Cloud)"
+    echo "4. Docker (Local or Cloud)"
     echo "   - Full control"
     echo "   - Deploy anywhere"
     echo "   - Production ready"
     echo ""
-    echo "4. Railway (Free tier available)"
+    echo "5. Railway (Free tier available)"
     echo "   - Simple deployment"
     echo "   - Built-in database"
     echo "   - Automatic scaling"
     echo ""
-    echo "5. Manual Setup"
+    echo "6. Manual Setup"
     echo "   - Build and test locally"
     echo "   - Choose your own platform"
     echo ""
@@ -187,14 +215,15 @@ show_options() {
 # Function to get user choice
 get_deployment_choice() {
     while true; do
-        read -p "Enter your choice (1-5): " choice
+        read -p "Enter your choice (1-6): " choice
         case $choice in
-            1) deploy_render; break;;
-            2) deploy_vercel; break;;
-            3) deploy_docker; break;;
-            4) deploy_railway; break;;
-            5) manual_setup; break;;
-            *) echo "Invalid choice. Please enter 1-5.";;
+            1) deploy_netlify; break;;
+            2) deploy_render; break;;
+            3) deploy_vercel; break;;
+            4) deploy_docker; break;;
+            5) deploy_railway; break;;
+            6) manual_setup; break;;
+            *) echo "Invalid choice. Please enter 1-6.";;
         esac
     done
 }
