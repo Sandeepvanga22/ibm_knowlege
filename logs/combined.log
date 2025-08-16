@@ -2737,3 +2737,15 @@
 {"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 20:51:28:5128"}
 {"duration":2,"level":"debug","message":"Executed query","rows":0,"text":"\n      SELECT agent_type, \n             COUNT(*) as total_suggestions,\n             AVG(confidence_score) as avg_confidence,\n             COUNT(CASE WHEN accepted = true THEN 1 END) as accepted_count\n      FROM agent_suggestions\n      WHERE created_at >= NOW() - INTERVAL '7 days'\n      GROUP BY agent_type\n    ","timestamp":"2025-08-16 20:51:28:5128"}
 {"duration":24,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation\n      FROM users\n      WHERE id = $1\n    ","timestamp":"2025-08-16 20:51:28:5128"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 20:51:37:5137"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 20:51:37:5137"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 20:51:37:5137"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 20:51:37:5137"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 20:51:37:5137"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 20:51:37:5137"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 20:54:05:545"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 20:54:05:545"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 20:54:05:545"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 20:54:05:545"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 20:54:05:545"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 20:54:05:545"}
