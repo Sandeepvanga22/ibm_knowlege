@@ -93,7 +93,7 @@ const generateAgentTestResult = (agentId, questionData = null) => {
 
   // Analyze the actual question content for more intelligent responses
   const questionText = (questionToAnalyze.title + ' ' + questionToAnalyze.content).toLowerCase();
-  const tags = questionToAnalyze.tags || [];
+  // const tags = questionToAnalyze.tags || []; // Unused variable - commented out
   
   // Smart routing based on content analysis
   let routingTeam = "General Support";
