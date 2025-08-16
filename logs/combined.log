@@ -2679,3 +2679,61 @@
 {"ip":"::1","level":"info","message":"GET /api/auth/me","timestamp":"2025-08-16 20:48:18:4818","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
 {"duration":1,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation\n      FROM users\n      WHERE id = $1\n    ","timestamp":"2025-08-16 20:48:18:4818"}
 {"duration":4,"level":"debug","message":"Executed query","rows":0,"text":"\n      SELECT agent_type, \n             COUNT(*) as total_suggestions,\n             AVG(confidence_score) as avg_confidence,\n             COUNT(CASE WHEN accepted = true THEN 1 END) as accepted_count\n      FROM agent_suggestions\n      WHERE created_at >= NOW() - INTERVAL '7 days'\n      GROUP BY agent_type\n    ","timestamp":"2025-08-16 20:48:18:4818"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 20:51:16:5116"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 20:51:16:5116"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 20:51:16:5116"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 20:51:16:5116"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 20:51:16:5116"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 20:51:16:5116"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 20:51:17:5117"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 20:51:17:5117"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 20:51:17:5117"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 20:51:17:5117"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 20:51:17:5117"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 20:51:17:5117"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 20:51:21:5121"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 20:51:21:5121"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 20:51:21:5121"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 20:51:21:5121"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 20:51:21:5121"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 20:51:21:5121"}
+{"ip":"::1","level":"info","message":"GET /api/analytics/dashboard","timestamp":"2025-08-16 20:51:22:5122","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/questions","timestamp":"2025-08-16 20:51:22:5122","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/users","timestamp":"2025-08-16 20:51:22:5122","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/auth/me","timestamp":"2025-08-16 20:51:22:5122","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 20:51:22:5122"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 20:51:22:5122"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 20:51:22:5122"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 20:51:22:5122"}
+{"duration":14,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation\n      FROM users\n      WHERE id = $1\n    ","timestamp":"2025-08-16 20:51:22:5122"}
+{"duration":18,"level":"debug","message":"Executed query","rows":3,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation, created_at\n      FROM users\n      ORDER BY reputation DESC, created_at DESC\n    ","timestamp":"2025-08-16 20:51:22:5122"}
+{"duration":21,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT \n        (SELECT COUNT(*) FROM users) as total_users,\n        (SELECT COUNT(*) FROM questions) as total_questions,\n        (SELECT COUNT(*) FROM answers) as total_answers\n    ","timestamp":"2025-08-16 20:51:22:5122"}
+{"duration":20,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.content, q.status, q.view_count, q.vote_count, q.created_at,\n             u.first_name, u.last_name,\n             array_agg(t.name) as tags\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      LEFT JOIN question_tags qt ON q.id = qt.question_id\n      LEFT JOIN tags t ON qt.tag_id = t.id\n    \n      GROUP BY q.id, u.first_name, u.last_name\n      ORDER BY q.created_at DESC\n      LIMIT $1 OFFSET $2\n    ","timestamp":"2025-08-16 20:51:22:5122"}
+{"duration":2,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.created_at, u.first_name, u.last_name\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      ORDER BY q.created_at DESC\n      LIMIT 5\n    ","timestamp":"2025-08-16 20:51:22:5122"}
+{"duration":2,"level":"debug","message":"Executed query","rows":0,"text":"\n      SELECT agent_type, \n             COUNT(*) as total_suggestions,\n             AVG(confidence_score) as avg_confidence,\n             COUNT(CASE WHEN accepted = true THEN 1 END) as accepted_count\n      FROM agent_suggestions\n      WHERE created_at >= NOW() - INTERVAL '7 days'\n      GROUP BY agent_type\n    ","timestamp":"2025-08-16 20:51:22:5122"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 20:51:23:5123"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 20:51:23:5123"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 20:51:23:5123"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 20:51:23:5123"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 20:51:23:5123"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 20:51:23:5123"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 20:51:27:5127"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 20:51:27:5127"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 20:51:27:5127"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 20:51:27:5127"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 20:51:27:5127"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 20:51:27:5127"}
+{"ip":"::1","level":"info","message":"GET /api/analytics/dashboard","timestamp":"2025-08-16 20:51:28:5128","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/questions","timestamp":"2025-08-16 20:51:28:5128","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/users","timestamp":"2025-08-16 20:51:28:5128","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/auth/me","timestamp":"2025-08-16 20:51:28:5128","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 20:51:28:5128"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 20:51:28:5128"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 20:51:28:5128"}
+{"duration":22,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT \n        (SELECT COUNT(*) FROM users) as total_users,\n        (SELECT COUNT(*) FROM questions) as total_questions,\n        (SELECT COUNT(*) FROM answers) as total_answers\n    ","timestamp":"2025-08-16 20:51:28:5128"}
+{"duration":23,"level":"debug","message":"Executed query","rows":3,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation, created_at\n      FROM users\n      ORDER BY reputation DESC, created_at DESC\n    ","timestamp":"2025-08-16 20:51:28:5128"}
+{"duration":4,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.created_at, u.first_name, u.last_name\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      ORDER BY q.created_at DESC\n      LIMIT 5\n    ","timestamp":"2025-08-16 20:51:28:5128"}
+{"duration":24,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.content, q.status, q.view_count, q.vote_count, q.created_at,\n             u.first_name, u.last_name,\n             array_agg(t.name) as tags\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      LEFT JOIN question_tags qt ON q.id = qt.question_id\n      LEFT JOIN tags t ON qt.tag_id = t.id\n    \n      GROUP BY q.id, u.first_name, u.last_name\n      ORDER BY q.created_at DESC\n      LIMIT $1 OFFSET $2\n    ","timestamp":"2025-08-16 20:51:28:5128"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 20:51:28:5128"}
+{"duration":2,"level":"debug","message":"Executed query","rows":0,"text":"\n      SELECT agent_type, \n             COUNT(*) as total_suggestions,\n             AVG(confidence_score) as avg_confidence,\n             COUNT(CASE WHEN accepted = true THEN 1 END) as accepted_count\n      FROM agent_suggestions\n      WHERE created_at >= NOW() - INTERVAL '7 days'\n      GROUP BY agent_type\n    ","timestamp":"2025-08-16 20:51:28:5128"}
+{"duration":24,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation\n      FROM users\n      WHERE id = $1\n    ","timestamp":"2025-08-16 20:51:28:5128"}
