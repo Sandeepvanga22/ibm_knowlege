@@ -1,0 +1,51 @@
+{
+  "name": "IBM Knowledge Ecosystem",
+  "description": "IBM Agent-Powered Knowledge Ecosystem - Smart Q&A Platform with Basic Agent Intelligence",
+  "repository": "https://github.com/YOUR_USERNAME/ibm-knowledge-ecosystem",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["ibm", "knowledge", "agents", "qa", "enterprise", "ai", "machine-learning"],
+  "addons": [
+    "heroku-postgresql:mini",
+    "heroku-redis:mini"
+  ],
+  "env": {
+    "NODE_ENV": {
+      "description": "Environment",
+      "value": "production"
+    },
+    "JWT_SECRET": {
+      "description": "JWT Secret Key",
+      "generator": "secret"
+    },
+    "AGENT_CONFIDENCE_THRESHOLD": {
+      "description": "Agent confidence threshold",
+      "value": "0.7"
+    },
+    "ENABLE_MOCK_DATA": {
+      "description": "Enable mock data for demo",
+      "value": "true"
+    },
+    "IBM_SSO_CLIENT_ID": {
+      "description": "IBM SSO Client ID",
+      "required": false
+    },
+    "IBM_SSO_CLIENT_SECRET": {
+      "description": "IBM SSO Client Secret",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "scripts": {
+    "postdeploy": "npm run db:setup"
+  }
+}
