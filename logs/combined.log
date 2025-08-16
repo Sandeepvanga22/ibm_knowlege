@@ -2943,3 +2943,199 @@
 {"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:21:26:2126"}
 {"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:21:26:2126"}
 {"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:21:26:2126"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:23:24:2324"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:23:24:2324"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:23:24:2324"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:23:24:2324"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:23:24:2324"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:23:24:2324"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:23:26:2326"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:23:26:2326"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:23:26:2326"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:23:26:2326"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:23:26:2326"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:23:26:2326"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:23:27:2327"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:23:27:2327"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:23:27:2327"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:23:27:2327"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:23:27:2327"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:23:27:2327"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:23:29:2329"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:23:29:2329"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:23:29:2329"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:23:29:2329"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:23:29:2329"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:23:29:2329"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:23:43:2343"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:23:43:2343"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:23:43:2343"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:23:43:2343"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:23:43:2343"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:23:43:2343"}
+{"ip":"::1","level":"info","message":"GET /api/analytics/dashboard","timestamp":"2025-08-16 23:23:44:2344","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/auth/me","timestamp":"2025-08-16 23:23:44:2344","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/users","timestamp":"2025-08-16 23:23:44:2344","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/questions","timestamp":"2025-08-16 23:23:44:2344","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:23:44:2344"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:23:44:2344"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:23:44:2344"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:23:44:2344"}
+{"duration":11,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation\n      FROM users\n      WHERE id = $1\n    ","timestamp":"2025-08-16 23:23:44:2344"}
+{"duration":12,"level":"debug","message":"Executed query","rows":3,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation, created_at\n      FROM users\n      ORDER BY reputation DESC, created_at DESC\n    ","timestamp":"2025-08-16 23:23:44:2344"}
+{"duration":15,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT \n        (SELECT COUNT(*) FROM users) as total_users,\n        (SELECT COUNT(*) FROM questions) as total_questions,\n        (SELECT COUNT(*) FROM answers) as total_answers\n    ","timestamp":"2025-08-16 23:23:44:2344"}
+{"duration":13,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.content, q.status, q.view_count, q.vote_count, q.created_at,\n             u.first_name, u.last_name,\n             array_agg(t.name) as tags\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      LEFT JOIN question_tags qt ON q.id = qt.question_id\n      LEFT JOIN tags t ON qt.tag_id = t.id\n    \n      GROUP BY q.id, u.first_name, u.last_name\n      ORDER BY q.created_at DESC\n      LIMIT $1 OFFSET $2\n    ","timestamp":"2025-08-16 23:23:44:2344"}
+{"duration":3,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.created_at, u.first_name, u.last_name\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      ORDER BY q.created_at DESC\n      LIMIT 5\n    ","timestamp":"2025-08-16 23:23:44:2344"}
+{"duration":2,"level":"debug","message":"Executed query","rows":0,"text":"\n      SELECT agent_type, \n             COUNT(*) as total_suggestions,\n             AVG(confidence_score) as avg_confidence,\n             COUNT(CASE WHEN accepted = true THEN 1 END) as accepted_count\n      FROM agent_suggestions\n      WHERE created_at >= NOW() - INTERVAL '7 days'\n      GROUP BY agent_type\n    ","timestamp":"2025-08-16 23:23:44:2344"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:23:51:2351"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:23:51:2351"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:23:51:2351"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:23:51:2351"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:23:51:2351"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:23:51:2351"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:23:54:2354"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:23:54:2354"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:23:54:2354"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:23:54:2354"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:23:54:2354"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:23:54:2354"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:23:55:2355"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:23:55:2355"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:23:55:2355"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:23:55:2355"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:23:55:2355"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:23:55:2355"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:23:57:2357"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:23:57:2357"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:23:57:2357"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:23:57:2357"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:23:57:2357"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:23:57:2357"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:26:14:2614"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:26:14:2614"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:26:14:2614"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:26:14:2614"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:26:14:2614"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:26:14:2614"}
+{"ip":"::1","level":"info","message":"GET /api/analytics/dashboard","timestamp":"2025-08-16 23:26:15:2615","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/questions","timestamp":"2025-08-16 23:26:15:2615","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/users","timestamp":"2025-08-16 23:26:15:2615","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/auth/me","timestamp":"2025-08-16 23:26:15:2615","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:26:15:2615"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:26:15:2615"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:26:15:2615"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:26:15:2615"}
+{"duration":12,"level":"debug","message":"Executed query","rows":3,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation, created_at\n      FROM users\n      ORDER BY reputation DESC, created_at DESC\n    ","timestamp":"2025-08-16 23:26:15:2615"}
+{"duration":10,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation\n      FROM users\n      WHERE id = $1\n    ","timestamp":"2025-08-16 23:26:15:2615"}
+{"duration":18,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT \n        (SELECT COUNT(*) FROM users) as total_users,\n        (SELECT COUNT(*) FROM questions) as total_questions,\n        (SELECT COUNT(*) FROM answers) as total_answers\n    ","timestamp":"2025-08-16 23:26:15:2615"}
+{"duration":15,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.content, q.status, q.view_count, q.vote_count, q.created_at,\n             u.first_name, u.last_name,\n             array_agg(t.name) as tags\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      LEFT JOIN question_tags qt ON q.id = qt.question_id\n      LEFT JOIN tags t ON qt.tag_id = t.id\n    \n      GROUP BY q.id, u.first_name, u.last_name\n      ORDER BY q.created_at DESC\n      LIMIT $1 OFFSET $2\n    ","timestamp":"2025-08-16 23:26:15:2615"}
+{"duration":2,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.created_at, u.first_name, u.last_name\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      ORDER BY q.created_at DESC\n      LIMIT 5\n    ","timestamp":"2025-08-16 23:26:15:2615"}
+{"duration":1,"level":"debug","message":"Executed query","rows":0,"text":"\n      SELECT agent_type, \n             COUNT(*) as total_suggestions,\n             AVG(confidence_score) as avg_confidence,\n             COUNT(CASE WHEN accepted = true THEN 1 END) as accepted_count\n      FROM agent_suggestions\n      WHERE created_at >= NOW() - INTERVAL '7 days'\n      GROUP BY agent_type\n    ","timestamp":"2025-08-16 23:26:15:2615"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:26:18:2618"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:26:18:2618"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:26:18:2618"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:26:18:2618"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:26:18:2618"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:26:18:2618"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:26:36:2636"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:26:36:2636"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:26:36:2636"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:26:36:2636"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:26:36:2636"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:26:36:2636"}
+{"ip":"::1","level":"info","message":"GET /api/analytics/dashboard","timestamp":"2025-08-16 23:26:36:2636","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/users","timestamp":"2025-08-16 23:26:36:2636","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/questions","timestamp":"2025-08-16 23:26:36:2636","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/auth/me","timestamp":"2025-08-16 23:26:36:2636","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:26:36:2636"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:26:36:2636"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:26:36:2636"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:26:36:2636"}
+{"duration":14,"level":"debug","message":"Executed query","rows":3,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation, created_at\n      FROM users\n      ORDER BY reputation DESC, created_at DESC\n    ","timestamp":"2025-08-16 23:26:36:2636"}
+{"duration":11,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation\n      FROM users\n      WHERE id = $1\n    ","timestamp":"2025-08-16 23:26:36:2636"}
+{"duration":19,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT \n        (SELECT COUNT(*) FROM users) as total_users,\n        (SELECT COUNT(*) FROM questions) as total_questions,\n        (SELECT COUNT(*) FROM answers) as total_answers\n    ","timestamp":"2025-08-16 23:26:36:2636"}
+{"duration":17,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.content, q.status, q.view_count, q.vote_count, q.created_at,\n             u.first_name, u.last_name,\n             array_agg(t.name) as tags\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      LEFT JOIN question_tags qt ON q.id = qt.question_id\n      LEFT JOIN tags t ON qt.tag_id = t.id\n    \n      GROUP BY q.id, u.first_name, u.last_name\n      ORDER BY q.created_at DESC\n      LIMIT $1 OFFSET $2\n    ","timestamp":"2025-08-16 23:26:36:2636"}
+{"duration":2,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.created_at, u.first_name, u.last_name\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      ORDER BY q.created_at DESC\n      LIMIT 5\n    ","timestamp":"2025-08-16 23:26:36:2636"}
+{"duration":1,"level":"debug","message":"Executed query","rows":0,"text":"\n      SELECT agent_type, \n             COUNT(*) as total_suggestions,\n             AVG(confidence_score) as avg_confidence,\n             COUNT(CASE WHEN accepted = true THEN 1 END) as accepted_count\n      FROM agent_suggestions\n      WHERE created_at >= NOW() - INTERVAL '7 days'\n      GROUP BY agent_type\n    ","timestamp":"2025-08-16 23:26:36:2636"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:26:52:2652"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:26:52:2652"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:26:52:2652"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:26:52:2652"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:26:52:2652"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:26:52:2652"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:27:06:276"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:27:06:276"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:27:06:276"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:27:06:276"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:27:06:276"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:27:06:276"}
+{"ip":"::1","level":"info","message":"GET /api/analytics/dashboard","timestamp":"2025-08-16 23:27:07:277","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/questions","timestamp":"2025-08-16 23:27:07:277","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/users","timestamp":"2025-08-16 23:27:07:277","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:27:07:277"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:27:07:277"}
+{"duration":23,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT \n        (SELECT COUNT(*) FROM users) as total_users,\n        (SELECT COUNT(*) FROM questions) as total_questions,\n        (SELECT COUNT(*) FROM answers) as total_answers\n    ","timestamp":"2025-08-16 23:27:07:277"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:27:07:277"}
+{"duration":22,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.content, q.status, q.view_count, q.vote_count, q.created_at,\n             u.first_name, u.last_name,\n             array_agg(t.name) as tags\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      LEFT JOIN question_tags qt ON q.id = qt.question_id\n      LEFT JOIN tags t ON qt.tag_id = t.id\n    \n      GROUP BY q.id, u.first_name, u.last_name\n      ORDER BY q.created_at DESC\n      LIMIT $1 OFFSET $2\n    ","timestamp":"2025-08-16 23:27:07:277"}
+{"duration":22,"level":"debug","message":"Executed query","rows":3,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation, created_at\n      FROM users\n      ORDER BY reputation DESC, created_at DESC\n    ","timestamp":"2025-08-16 23:27:07:277"}
+{"duration":3,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.created_at, u.first_name, u.last_name\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      ORDER BY q.created_at DESC\n      LIMIT 5\n    ","timestamp":"2025-08-16 23:27:07:277"}
+{"duration":3,"level":"debug","message":"Executed query","rows":0,"text":"\n      SELECT agent_type, \n             COUNT(*) as total_suggestions,\n             AVG(confidence_score) as avg_confidence,\n             COUNT(CASE WHEN accepted = true THEN 1 END) as accepted_count\n      FROM agent_suggestions\n      WHERE created_at >= NOW() - INTERVAL '7 days'\n      GROUP BY agent_type\n    ","timestamp":"2025-08-16 23:27:07:277"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:27:38:2738"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:27:38:2738"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:27:38:2738"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:27:38:2738"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:27:38:2738"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:27:38:2738"}
+{"ip":"::1","level":"info","message":"GET /api/analytics/dashboard","timestamp":"2025-08-16 23:27:38:2738","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/questions","timestamp":"2025-08-16 23:27:38:2738","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/users","timestamp":"2025-08-16 23:27:38:2738","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:27:38:2738"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:27:38:2738"}
+{"level":"info","message":"Connected to PostgreSQL database","timestamp":"2025-08-16 23:27:38:2738"}
+{"duration":15,"level":"debug","message":"Executed query","rows":3,"text":"\n      SELECT id, ibm_id, email, first_name, last_name, department, team, expertise, reputation, created_at\n      FROM users\n      ORDER BY reputation DESC, created_at DESC\n    ","timestamp":"2025-08-16 23:27:38:2738"}
+{"duration":22,"level":"debug","message":"Executed query","rows":1,"text":"\n      SELECT \n        (SELECT COUNT(*) FROM users) as total_users,\n        (SELECT COUNT(*) FROM questions) as total_questions,\n        (SELECT COUNT(*) FROM answers) as total_answers\n    ","timestamp":"2025-08-16 23:27:38:2738"}
+{"duration":19,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.content, q.status, q.view_count, q.vote_count, q.created_at,\n             u.first_name, u.last_name,\n             array_agg(t.name) as tags\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      LEFT JOIN question_tags qt ON q.id = qt.question_id\n      LEFT JOIN tags t ON qt.tag_id = t.id\n    \n      GROUP BY q.id, u.first_name, u.last_name\n      ORDER BY q.created_at DESC\n      LIMIT $1 OFFSET $2\n    ","timestamp":"2025-08-16 23:27:38:2738"}
+{"duration":4,"level":"debug","message":"Executed query","rows":5,"text":"\n      SELECT q.id, q.title, q.created_at, u.first_name, u.last_name\n      FROM questions q\n      LEFT JOIN users u ON q.user_id = u.id\n      ORDER BY q.created_at DESC\n      LIMIT 5\n    ","timestamp":"2025-08-16 23:27:38:2738"}
+{"duration":2,"level":"debug","message":"Executed query","rows":0,"text":"\n      SELECT agent_type, \n             COUNT(*) as total_suggestions,\n             AVG(confidence_score) as avg_confidence,\n             COUNT(CASE WHEN accepted = true THEN 1 END) as accepted_count\n      FROM agent_suggestions\n      WHERE created_at >= NOW() - INTERVAL '7 days'\n      GROUP BY agent_type\n    ","timestamp":"2025-08-16 23:27:38:2738"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:27:49:2749"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:27:49:2749"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:27:49:2749"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:27:49:2749"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:27:49:2749"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:27:49:2749"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:27:50:2750"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:27:50:2750"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:27:50:2750"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:27:50:2750"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:27:50:2750"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:27:50:2750"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:28:01:281"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:28:01:281"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:28:01:281"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:28:01:281"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:28:01:281"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:28:01:281"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:28:04:284"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:28:04:284"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:28:04:284"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:28:04:284"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:28:04:284"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:28:04:284"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:28:06:286"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:28:06:286"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:28:06:286"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:28:06:286"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:28:06:286"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:28:06:286"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:28:11:2811"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:28:11:2811"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:28:11:2811"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:28:11:2811"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:28:11:2811"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:28:11:2811"}
+{"level":"info","message":"Agent Orchestrator initialized","timestamp":"2025-08-16 23:28:14:2814"}
+{"level":"info","message":"IBM Knowledge Ecosystem server running on port 5000","timestamp":"2025-08-16 23:28:14:2814"}
+{"level":"info","message":"Environment: development","timestamp":"2025-08-16 23:28:14:2814"}
+{"level":"info","message":"Health check available at: http://localhost:5000/api/health","timestamp":"2025-08-16 23:28:14:2814"}
+{"level":"info","message":"Connected to Redis","timestamp":"2025-08-16 23:28:14:2814"}
+{"level":"info","message":"Redis client ready","timestamp":"2025-08-16 23:28:14:2814"}
